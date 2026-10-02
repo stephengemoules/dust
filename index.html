@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The first 90 days of US Customer Success at Dust · Stephen Gemoules</title>
+<meta name="description" content="How I would build Dust's US post-sales motion as its first Customer Success Lead.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F5F6F3;
+    --ink: #1B2130;
+    --muted: #5B6273;
+    --rule: #D5D8D0;
+    --field: #FFFFFF;
+    --accounts: #2F5D50;   /* time spent inside customer accounts */
+    --building: #C9A227;   /* time spent building the operating model */
+    --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+    --sans: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #151922;
+      --ink: #E8EAE4;
+      --muted: #A3A9B6;
+      --rule: #2C3240;
+      --field: #1C212C;
+      --accounts: #6FB29C;
+      --building: #E3C35A;
+    }
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 1.125rem;
+    line-height: 1.65;
+    padding: env(safe-area-inset-top, 0) env(safe-area-inset-right, 0) env(safe-area-inset-bottom, 0) env(safe-area-inset-left, 0);
+  }
+  a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  a:focus-visible { outline: 2px solid var(--accounts); outline-offset: 3px; border-radius: 2px; }
+
+  .wrap { max-width: 44rem; margin: 0 auto; padding: 0 1.5rem; }
+  .wide { max-width: 64rem; margin: 0 auto; padding: 0 1.5rem; }
+
+  h1, h2, h3 { font-family: var(--sans); font-weight: 700; line-height: 1.12; letter-spacing: -0.015em; }
+  h1 { font-size: clamp(2.4rem, 6vw, 4rem); margin: 0 0 1.5rem; max-width: 16ch; }
+  h2 { font-size: clamp(1.5rem, 3vw, 2rem); margin: 0 0 1rem; }
+  h3 { font-size: 1.2rem; margin: 0 0 .5rem; font-weight: 500; }
+  p { margin: 0 0 1.1rem; }
+  .lede { font-size: 1.3rem; line-height: 1.55; color: var(--ink); max-width: 36rem; }
+  .byline { font-family: var(--sans); color: var(--muted); font-size: .95rem; margin-bottom: 2.5rem; }
+
+  header { padding: 5rem 0 3.5rem; }
+  section { padding: 3.25rem 0; border-top: 1px solid var(--rule); }
+
+  /* The memorable element: the shift from accounts to building, drawn as three bars */
+  .shift { margin-top: 2.5rem; }
+  .shift-legend { display: flex; gap: 1.5rem; flex-wrap: wrap; font-family: var(--sans); font-size: .9rem; color: var(--muted); margin-bottom: 1.25rem; }
+  .shift-legend span::before { content: ""; display: inline-block; width: .8rem; height: .8rem; margin-right: .45rem; vertical-align: -1px; border-radius: 2px; }
+  .k-acc::before { background: var(--accounts); }
+  .k-bld::before { background: var(--building); }
+
+  .phase { display: grid; grid-template-columns: 9rem 1fr; gap: 1.25rem 2rem; padding: 2rem 0; border-top: 1px solid var(--rule); }
+  .phase:first-of-type { border-top: 0; }
+  .phase-when { font-family: var(--sans); }
+  .phase-when b { display: block; font-size: 1.6rem; font-weight: 700; letter-spacing: -0.02em; }
+  .phase-when small { color: var(--muted); font-size: .9rem; }
+  .bar { display: flex; height: 14px; border-radius: 7px; overflow: hidden; margin: .25rem 0 1.25rem; background: var(--rule); }
+  .bar i { display: block; height: 100%; }
+  .bar .a { background: var(--accounts); }
+  .bar .b { background: var(--building); }
+  .bar-label { font-family: var(--sans); font-size: .85rem; color: var(--muted); margin: -.75rem 0 1rem; }
+  .phase ul { margin: 0 0 .75rem; padding-left: 1.1rem; }
+  .phase li { margin-bottom: .45rem; }
+  .ships { font-family: var(--sans); font-size: .95rem; background: var(--field); border: 1px solid var(--rule); border-radius: 6px; padding: .8rem 1rem; }
+  .ships strong { font-weight: 700; }
+
+  /* Segmentation table */
+  .table-scroll { overflow-x: auto; margin-top: 1.5rem; }
+  table { border-collapse: collapse; width: 100%; min-width: 34rem; font-size: 1rem; }
+  th, td { text-align: left; vertical-align: top; padding: .8rem .9rem .8rem 0; border-bottom: 1px solid var(--rule); }
+  th { font-family: var(--sans); font-weight: 500; color: var(--muted); font-size: .9rem; }
+  td:first-child { font-family: var(--sans); font-weight: 700; white-space: nowrap; }
+
+  .agents { display: grid; gap: 1.75rem; margin-top: 1.5rem; }
+  .agent h3 { margin-bottom: .35rem; }
+  .agent p { margin: 0; color: var(--ink); }
+  .agent .where { font-family: var(--sans); font-size: .9rem; color: var(--muted); margin-top: .35rem; }
+
+  .measure { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1rem; }
+  .measure h3 { color: var(--muted); }
+  .measure ul { margin: 0; padding-left: 1.1rem; }
+  .measure li { margin-bottom: .45rem; }
+
+  .built { background: var(--field); border: 1px solid var(--rule); border-left: 4px solid var(--accounts); border-radius: 6px; padding: 1.25rem 1.5rem; }
+  .built h2 { font-size: 1.35rem; margin-bottom: .5rem; }
+  .built p { margin: 0 0 .75rem; }
+  .built a.watch { font-family: var(--sans); font-weight: 700; color: var(--accounts); }
+  .spread { margin: 1rem 0 1.5rem; padding-left: 1.1rem; }
+  .spread li { margin-bottom: .6rem; }
+  .src { font-family: var(--sans); font-size: .85rem; color: var(--muted); }
+  footer { padding: 3rem 0 5rem; border-top: 1px solid var(--rule); font-family: var(--sans); font-size: .95rem; color: var(--muted); }
+  footer p { max-width: 36rem; }
+
+  @media (max-width: 640px) {
+    header { padding: 3rem 0 2.5rem; }
+    .phase { grid-template-columns: 1fr; gap: .5rem; }
+    .measure { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .bar i { animation: grow .9s ease-out both; transform-origin: left; }
+    @keyframes grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  }
+</style>
+</head>
+<body>
+
+<header class="wrap">
+  <h1>The first 90 days of US Customer Success at Dust</h1>
+  <p class="byline">A working plan by Stephen Gemoules, written for Dust's Customer Success Lead role in New York</p>
+  <p class="lede">Dust doesn't get piloted and shelved. It lands and spreads. The US post-sales motion should protect that spread and speed it up, and the fastest way to learn what that takes is to work inside the accounts first and build only what they prove we need.</p>
+</header>
+
+<!-- LOOM SECTION START: paste your Loom link in place of LOOM_URL, or delete everything down to LOOM SECTION END -->
+<section class="wrap" aria-labelledby="h-built" style="border-top:0;padding-top:0">
+  <div class="built">
+    <h2 id="h-built">I built the first piece already</h2>
+    <p>The Sales-to-CS handoff is where post-sale value is won or lost, so I built it as a working Dust agent. It turns messy closed-won notes into a handoff brief with a readiness verdict, stakeholder map, pilot design, success criteria, expansion path and risks.</p>
+    <p><a class="watch" href="LOOM_URL">Watch the 3-minute walkthrough</a></p>
+  </div>
+</section>
+<!-- LOOM SECTION END -->
+
+<section class="wrap" aria-labelledby="h-shift">
+  <h2 id="h-shift">How my time shifts</h2>
+  <p>The role starts as a player-coach and ends as a builder. I'd plan the shift on purpose rather than let the calendar decide it.</p>
+
+  <div class="shift">
+    <div class="shift-legend" aria-hidden="true">
+      <span class="k-acc">Inside customer accounts</span>
+      <span class="k-bld">Building the operating model and team</span>
+    </div>
+
+    <div class="phase">
+      <div class="phase-when"><b>Days 1–30</b><small>Learn inside the accounts</small></div>
+      <div>
+        <div class="bar" role="img" aria-label="About 75 percent in accounts, 25 percent building"><i class="a" style="width:75%"></i><i class="b" style="width:25%"></i></div>
+        <ul>
+          <li>Take a hands-on portfolio of the most strategic and most complex US accounts.</li>
+          <li>Sit in on live deals with AEs and ride along with the Deployment Strategists and Solutions Engineers.</li>
+          <li>Build Dust agents myself for my own work, so I know the product the way customers' AI Operators do.</li>
+          <li>Spend real time with the Paris post-sales team to learn what already works before inventing anything.</li>
+        </ul>
+        <p class="ships"><strong>Ships by day 30:</strong> an account-by-account read of the US book, with the top risks and expansion paths named and owned.</p>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-when"><b>Days 31–60</b><small>Make the pattern repeatable</small></div>
+      <div>
+        <div class="bar" role="img" aria-label="About 55 percent in accounts, 45 percent building"><i class="a" style="width:55%"></i><i class="b" style="width:45%"></i></div>
+        <ul>
+          <li>Turn what I saw in the accounts into a first segmentation and coverage model.</li>
+          <li>Fix the Sales-to-CS handoff with AEs: stakeholders, use cases and success criteria agreed before signature.</li>
+          <li>Start a weekly rhythm across CSMs, Deployment Strategists and SEs on adoption, health, renewals and escalations.</li>
+          <li>Bring the first recurring product gaps to Product with account evidence behind them.</li>
+        </ul>
+        <p class="ships"><strong>Ships by day 60:</strong> the handoff template, the coverage model, and a health view the whole post-sales group uses.</p>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-when"><b>Days 61–90</b><small>Build the operating model</small></div>
+      <div>
+        <div class="bar" role="img" aria-label="About 40 percent in accounts, 60 percent building"><i class="a" style="width:40%"></i><i class="b" style="width:60%"></i></div>
+        <ul>
+          <li>Write down the playbooks that worked: onboarding to first agents, executive engagement, expansion to new teams.</li>
+          <li>Put a success plan in place for every strategic account, tied to the customer's own business priorities.</li>
+          <li>Define the roles and hiring plan for the next stage of the US team.</li>
+          <li>Keep a small strategic portfolio. Staying close to customers is how the playbook stays honest.</li>
+        </ul>
+        <p class="ships"><strong>Ships by day 90:</strong> a US post-sales operating model, a hiring plan, and a renewal and expansion forecast leadership can plan against.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" aria-labelledby="h-seg">
+  <h2 id="h-seg">A first cut at segmentation</h2>
+  <p>This is a starting hypothesis I'd test against the real book in the first month. The principle is to match coverage to where the next team's adoption will come from, not just to contract size.</p>
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr><th scope="col">Tier</th><th scope="col">Who</th><th scope="col">Coverage</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Strategic</td><td>Largest accounts, or accounts where Dust could become company-wide</td><td>Named CSM with a Deployment Strategist; executive sponsor; quarterly value reviews</td></tr>
+        <tr><td>Growth</td><td>Strong adoption in one or two teams with clear room to spread</td><td>Pooled CSM coverage; expansion plays run with the AE</td></tr>
+        <tr><td>Scaled</td><td>Smaller or self-serve workspaces</td><td>Programs, templates and in-product guidance, with alerts that pull in a human when health drops</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="wrap" aria-labelledby="h-spread">
+  <h2 id="h-spread">What Dust's customers teach about spread</h2>
+  <p>Dust's own stories point to the same pattern. Adoption doesn't grow evenly. It starts with one team, plateaus, and then climbs quickly once it reaches critical mass.</p>
+  <ul class="spread">
+    <li><strong>Doctolib</strong> went from a 30-person pilot to a company-wide rollout reaching 3,000 employees.</li>
+    <li><strong>Persona</strong> has teams across 11 departments running more than 300 Dust agents.</li>
+    <li><strong>Clay</strong> grew its GTM team 4x without growing enablement headcount at the same rate.</li>
+  </ul>
+  <p>For Customer Success, that means three plays. Pick the pilot by who already uses AI most, not by org chart. Seed builders in the teams next to the pilot, because spread happens sideways. And treat cross-team agent use as the expansion signal, since it shows up before anyone asks for more seats.</p>
+  <p class="src">Drawn from Dust's published case studies and founder interviews.</p>
+</section>
+
+<section class="wrap" aria-labelledby="h-agents">
+  <h2 id="h-agents">Using Dust to run Customer Success</h2>
+  <p>A CS team that sells an agent platform should run on one. These are the first three agents I'd build for the team.</p>
+  <div class="agents">
+    <div class="agent">
+      <h3>Handoff brief (built, see above)</h3>
+      <p>Reads the deal notes, call transcripts and CRM record, then drafts the stakeholder map, priority use cases, success criteria and a 30/60/90 adoption plan for the AE and CSM to confirm together.</p>
+      <p class="where">Runs when an opportunity closes</p>
+    </div>
+    <div class="agent">
+      <h3>Weekly account digest</h3>
+      <p>Summarizes adoption, new agents, support themes and open risks for each strategic account and posts it to the account's Slack channel before the weekly rhythm.</p>
+      <p class="where">Runs every Monday</p>
+    </div>
+    <div class="agent">
+      <h3>Renewal early warning</h3>
+      <p>Watches for the signals that come before churn, like a champion leaving, usage concentrated in one team or an unanswered executive, and flags them 120 days before renewal instead of 30.</p>
+      <p class="where">Runs daily, alerts only when something changes</p>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" aria-labelledby="h-measure">
+  <h2 id="h-measure">What I'd hold the team to</h2>
+  <p>Customer outcomes first, activity second. Meetings held and QBRs delivered are how we work, not what we deliver.</p>
+  <div class="measure">
+    <div>
+      <h3>Outcomes</h3>
+      <ul>
+        <li>Weekly active users as a share of seats</li>
+        <li>Agents in production use per account</li>
+        <li>Use cases live versus those agreed at handoff</li>
+        <li>Gross and net revenue retention</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Health of the motion</h3>
+      <ul>
+        <li>Time from signature to first agent in use</li>
+        <li>Share of strategic accounts with a current success plan</li>
+        <li>Risks flagged early versus found at renewal</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" aria-labelledby="h-questions">
+  <h2 id="h-questions">What I'd want to learn first</h2>
+  <p>This plan is written from the outside. The first weeks would test it against questions only the team can answer: where adoption stalls after the first team, which customers expanded without anyone pushing, how the US and Paris teams should split work across time zones, and where the handoff from Sales most often breaks today.</p>
+</section>
+
+<section class="wrap" aria-labelledby="h-how">
+  <h2 id="h-how">How I build</h2>
+  <div class="agents">
+    <div class="agent">
+      <h3>Build from scratch</h3>
+      <p>Playbooks, programs, forecasts, functions. I find what's missing or broken, build a solution, then operationalize it so it scales without me.</p>
+    </div>
+    <div class="agent">
+      <h3>Lead across functions</h3>
+      <p>I get things done by aligning Sales, Product, Onboarding, Services and CS around one shared outcome, then driving execution end to end.</p>
+    </div>
+    <div class="agent">
+      <h3>Turn data into action</h3>
+      <p>Whether it's a churn-risk model, a usage signal layer or a Board update, I find the signal, make it visible, and connect it to a decision.</p>
+    </div>
+    <div class="agent">
+      <h3>Player-coach at heart</h3>
+      <p>I do the work alongside my team. It's how I learn the business and the customers, and how the playbook stays honest.</p>
+    </div>
+  </div>
+  <p style="margin-top:1.5rem">Build, test, measure, learn, repeat.</p>
+</section>
+
+<footer class="wrap">
+  <p>Stephen Gemoules. I've built post-sales functions from their first version more than once: the first post-sale leader for Opal, Optimizely's agent orchestration platform; the first Account Manager and first churn scorecard at Datorama; and the Global AM Handbook at CHEQ. I built an expansion intelligence system with Claude by prompting and testing, not writing code.</p>
+  <p><a href="mailto:stephen.gemoules@gmail.com">stephen.gemoules@gmail.com</a> · <a href="https://www.linkedin.com/in/stephengemoules">LinkedIn</a></p>
+</footer>
+
+</body>
+</html>
